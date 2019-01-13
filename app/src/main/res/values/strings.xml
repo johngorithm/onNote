@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">onNote</string>
+    <string name="select_priority_text">Select Priority</string>
+</resources>

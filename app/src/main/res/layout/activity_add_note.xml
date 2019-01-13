@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    android:orientation="vertical"
+    tools:context=".view.AddNoteActivity">
+
+    <EditText
+        android:id="@+id/title_input_field"
+        android:hint="Title"
+        android:layout_marginBottom="30dp"
+        android:inputType="text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints="" />
+
+    <EditText
+        android:id="@+id/description_input_field"
+        android:inputType="textMultiLine"
+        android:layout_marginBottom="30dp"
+        android:hint="Description"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:importantForAutofill="no" />
+    <TextView
+        android:text="@string/select_priority_text"
+        android:layout_marginBottom="10dp"
+        android:textSize="17sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <NumberPicker
+        android:id="@+id/priority_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    </NumberPicker>
+</LinearLayout>
