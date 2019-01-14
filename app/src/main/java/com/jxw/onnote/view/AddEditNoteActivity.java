@@ -12,7 +12,8 @@ import android.widget.Toast;
 
 import com.jxw.onnote.R;
 
-public class AddNoteActivity extends AppCompatActivity {
+public class AddEditNoteActivity extends AppCompatActivity {
+    public static final String ID_EXTRA = "com.jxw.onnote.ID_EXTRA";
     public static final String TITLE_EXTRA = "com.jxw.onnote.TITLE_EXTRA";
     public static final String DESCRIPTION_EXTRA = "com.jxw.onnote.DESCRIPTION_EXTRA";
     public static final String PRIORITY_EXTRA = "com.jxw.onnote.PRIORITY_EXTRA";
@@ -34,10 +35,19 @@ public class AddNoteActivity extends AppCompatActivity {
         priorityField.setMaxValue(10);
         priorityField.setMinValue(1);
 
-        // Set ActionBar Values
-        setTitle("ADD NOTE");
         // Close Icon
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close_black_24dp);
+
+        // Set ActionBar Values
+        Intent incomingIntent = getIntent();
+        if (incomingIntent.hasExtra(ID_EXTRA)) {
+            setTitle("EDIT NOTE");
+            titleField.setText(incomingIntent.getStringExtra(TITLE_EXTRA));
+            descriptionField.setText(incomingIntent.getStringExtra(DESCRIPTION_EXTRA));
+            priorityField.setValue(incomingIntent.getIntExtra(PRIORITY_EXTRA, 1));
+        } else {
+            setTitle("ADD NOTE");
+        }
     }
 
     @Override
@@ -82,6 +92,11 @@ public class AddNoteActivity extends AppCompatActivity {
             replyIntent.putExtra(TITLE_EXTRA, title);
             replyIntent.putExtra(DESCRIPTION_EXTRA, description);
             replyIntent.putExtra(PRIORITY_EXTRA, priority);
+
+            int id = getIntent().getIntExtra(ID_EXTRA, -1);
+            if (id != -1) {
+                replyIntent.putExtra(ID_EXTRA, id);
+            }
 
             setResult(RESULT_OK, replyIntent);
             finish();

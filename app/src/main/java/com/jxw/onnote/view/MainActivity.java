@@ -27,6 +27,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private NoteViewModel noteViewModel;
     public static final int ADD_NOTE_REQUEST_CODE = 1;
+    public static final int EDIT_NOTE_REQUEST_CODE = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         buttonAddNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent addNoteIntent = new Intent(MainActivity.this, AddNoteActivity.class);
+                Intent addNoteIntent = new Intent(MainActivity.this, AddEditNoteActivity.class);
                 startActivityForResult(addNoteIntent, ADD_NOTE_REQUEST_CODE);
             }
         });
@@ -73,6 +74,20 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Note Deleted", Toast.LENGTH_SHORT).show();
             }
         }).attachToRecyclerView(notesRecyclerView);
+
+        noteAdapter.setOnItemClickListener(new NoteAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Note note) {
+                Intent editNoteIntent = new Intent(MainActivity.this, AddEditNoteActivity.class);
+
+                editNoteIntent.putExtra(AddEditNoteActivity.ID_EXTRA, note.getId());
+                editNoteIntent.putExtra(AddEditNoteActivity.TITLE_EXTRA, note.getTitle());
+                editNoteIntent.putExtra(AddEditNoteActivity.DESCRIPTION_EXTRA, note.getDescription());
+                editNoteIntent.putExtra(AddEditNoteActivity.PRIORITY_EXTRA, note.getPriority());
+
+                startActivityForResult(editNoteIntent, EDIT_NOTE_REQUEST_CODE);
+            }
+        });
     }
 
     @Override
@@ -80,14 +95,31 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         
         if (requestCode == ADD_NOTE_REQUEST_CODE && resultCode == RESULT_OK) {
-            String title = data.getStringExtra(AddNoteActivity.TITLE_EXTRA);
-            String description = data.getStringExtra(AddNoteActivity.DESCRIPTION_EXTRA);
-            int priority = data.getIntExtra(AddNoteActivity.PRIORITY_EXTRA, 1);
+            String title = data.getStringExtra(AddEditNoteActivity.TITLE_EXTRA);
+            String description = data.getStringExtra(AddEditNoteActivity.DESCRIPTION_EXTRA);
+            int priority = data.getIntExtra(AddEditNoteActivity.PRIORITY_EXTRA, 1);
             
             Note newNote = new Note(title, description, priority);
             noteViewModel.insert(newNote);
 
             Toast.makeText(this, "Note Saved", Toast.LENGTH_SHORT).show();
+        } else if (requestCode == EDIT_NOTE_REQUEST_CODE && resultCode == RESULT_OK) {
+            int id = data.getIntExtra(AddEditNoteActivity.ID_EXTRA, -1);
+
+            if (id == -1) {
+                Toast.makeText(this, "Note Can't Be Updated", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            String title = data.getStringExtra(AddEditNoteActivity.TITLE_EXTRA);
+            String description = data.getStringExtra(AddEditNoteActivity.DESCRIPTION_EXTRA);
+            int priority = data.getIntExtra(AddEditNoteActivity.PRIORITY_EXTRA, 1);
+
+            Note noteToUpdate = new Note(title, description, priority);
+            noteToUpdate.setId(id);
+            
+            noteViewModel.update(noteToUpdate);
+            Toast.makeText(this, "Note Updated", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "Note Not Saved", Toast.LENGTH_SHORT).show();
         }
