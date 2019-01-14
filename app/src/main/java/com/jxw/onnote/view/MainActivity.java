@@ -22,6 +22,7 @@ import com.jxw.onnote.adapter.NoteAdapter;
 import com.jxw.onnote.data.Note;
 import com.jxw.onnote.data.NoteViewModel;
 
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -84,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
                 editNoteIntent.putExtra(AddEditNoteActivity.TITLE_EXTRA, note.getTitle());
                 editNoteIntent.putExtra(AddEditNoteActivity.DESCRIPTION_EXTRA, note.getDescription());
                 editNoteIntent.putExtra(AddEditNoteActivity.PRIORITY_EXTRA, note.getPriority());
+                editNoteIntent.putExtra(AddEditNoteActivity.CREATED_AT_EXTRA, note.getCreatedAt());
 
                 startActivityForResult(editNoteIntent, EDIT_NOTE_REQUEST_CODE);
             }
@@ -99,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
             String description = data.getStringExtra(AddEditNoteActivity.DESCRIPTION_EXTRA);
             int priority = data.getIntExtra(AddEditNoteActivity.PRIORITY_EXTRA, 1);
             
-            Note newNote = new Note(title, description, priority);
+            Note newNote = new Note(title, description, priority, new Date().toString(), null);
             noteViewModel.insert(newNote);
 
             Toast.makeText(this, "Note Saved", Toast.LENGTH_SHORT).show();
@@ -114,8 +116,9 @@ public class MainActivity extends AppCompatActivity {
             String title = data.getStringExtra(AddEditNoteActivity.TITLE_EXTRA);
             String description = data.getStringExtra(AddEditNoteActivity.DESCRIPTION_EXTRA);
             int priority = data.getIntExtra(AddEditNoteActivity.PRIORITY_EXTRA, 1);
+            String createdAt = data.getStringExtra(AddEditNoteActivity.CREATED_AT_EXTRA);
 
-            Note noteToUpdate = new Note(title, description, priority);
+            Note noteToUpdate = new Note(title, description, priority, createdAt, new Date().toString());
             noteToUpdate.setId(id);
             
             noteViewModel.update(noteToUpdate);

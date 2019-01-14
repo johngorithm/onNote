@@ -47,6 +47,16 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             />
+
+        <TextView
+            android:id="@+id/createdAt_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2019-01-17"
+            android:textColor="@color/colorPrimary"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/description_text_view"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
     </RelativeLayout>
 
 

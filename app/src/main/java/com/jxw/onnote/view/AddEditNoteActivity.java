@@ -17,6 +17,7 @@ public class AddEditNoteActivity extends AppCompatActivity {
     public static final String TITLE_EXTRA = "com.jxw.onnote.TITLE_EXTRA";
     public static final String DESCRIPTION_EXTRA = "com.jxw.onnote.DESCRIPTION_EXTRA";
     public static final String PRIORITY_EXTRA = "com.jxw.onnote.PRIORITY_EXTRA";
+    public static final String CREATED_AT_EXTRA = "com.jxw.onnote.CREATED_AT_EXTRA";
 
     private EditText titleField;
     private EditText descriptionField;
@@ -93,10 +94,15 @@ public class AddEditNoteActivity extends AppCompatActivity {
             replyIntent.putExtra(DESCRIPTION_EXTRA, description);
             replyIntent.putExtra(PRIORITY_EXTRA, priority);
 
+            String createAt = getIntent().getStringExtra(CREATED_AT_EXTRA);
+            replyIntent.putExtra(CREATED_AT_EXTRA, createAt);
+
             int id = getIntent().getIntExtra(ID_EXTRA, -1);
             if (id != -1) {
                 replyIntent.putExtra(ID_EXTRA, id);
             }
+
+
 
             setResult(RESULT_OK, replyIntent);
             finish();
